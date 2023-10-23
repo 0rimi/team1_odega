@@ -55,4 +55,55 @@ private static PostsDAO instance = new PostsDAO();
 		return post;
 	}
 
+	//네비바 제목 검색 기능
+	public ArrayList<PostsDTO> searchList(String searchR) {
+		ArrayList<PostsDTO> list=new ArrayList<>();
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			conn = getConnection();
+			String sql="select posts.*, users.* from posts join users on posts.user_num = users.num where title like '%"+searchR+"%' order by posts.reg";
+			pstmt=conn.prepareStatement(sql);		
+			rs=pstmt.executeQuery();
+			while(rs.next()){
+				PostsDTO dto=new PostsDTO();
+				dto.setNum(rs.getInt("num"));
+				dto.setNickname(rs.getString("nickname"));
+				dto.setTitle(rs.getString("title"));
+				dto.setContent(rs.getString("content"));
+				dto.setReg(rs.getTimestamp("reg"));
+				dto.setPost_like_cnt(rs.getInt("post_like_cnt"));
+				list.add(dto);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			close(rs, pstmt, conn);
+		}return list;
+	}
+		
+	//좋아요 1증가
+	public int likeUp(int posts_num) {
+		int likeup=0;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			conn=getConnection();
+			pstmt = conn.prepareStatement("update posts set post_like_cnt = post_like_cnt + 1 where num = ?");
+			pstmt.setInt(1, posts_num);
+			likeup = pstmt.executeUpdate();
+		    
+			PostsDTO dto = new PostsDTO();
+			dto.setPost_like_cnt(likeup);
+		    
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			close(rs, pstmt, conn);
+		}return likeup;
+	}
+
 }
