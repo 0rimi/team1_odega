@@ -1,8 +1,8 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ page import="java.sql.*"  %>
-<%@ page import="db.posts.PostDAO" %>
-<%@ page import="db.posts.PostDTO" %>
-<%@ page import="db.users.UserLikeDAO" %>
+<%@ page import="odega.bean.PostsDAO" %>
+<%@ page import="odega.bean.PostsDTO" %>
+<%@ page import="odega.bean.UserLikeDAO" %>
 
 <html lang="ko">
 <html>
