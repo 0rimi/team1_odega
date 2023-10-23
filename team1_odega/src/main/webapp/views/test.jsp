@@ -6,6 +6,13 @@
 <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=bsyhva5qif"></script>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<!--boot css-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <!--boot js-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+    <!-- naver map api -->
+    <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=YOUR_CLIENT_ID"></script>
+    
 </head>
 <body>
 
@@ -13,6 +20,9 @@
 	
 </body>
 <script>
+
+
+
 var HOME_PATH = window.HOME_PATH || '.';
 
 var cityhall = new naver.maps.LatLng(37.5666805, 126.9784147),
@@ -35,7 +45,21 @@ var contentString = [
     ].join('');
 
 var infowindow = new naver.maps.InfoWindow({
-    content: contentString
+	content: [
+	    '<div style="padding: 10px; box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 16px 0px;">',
+	    `   <div style="font-weight: bold; margin-bottom: 5px;">${sortedToiletData[0].FNAME}</div>`,
+	    `   <div style="font-size: 13px;">
+	    		<h3>서울특별시청</h3>
+	    		<p>서울특별시 중구 태평로1가 31 | 서울특별시 중구 세종대로 110 서울특별시청</p>
+	    	<div>`,
+	    "</div>",
+	  ].join(""),
+	  maxWidth: 300,
+	  anchorSize: {
+	    width: 12,
+	    height: 14,
+	  },
+	  borderColor: "#cecdc7",
 });
 
 naver.maps.Event.addListener(marker, "click", function(e) {
