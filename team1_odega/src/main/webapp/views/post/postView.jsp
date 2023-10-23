@@ -6,6 +6,8 @@
 <%@ page import = "odega.bean.PostsDTO"%>
 <%@ page import = "odega.bean.MapDAO"%>
 <%@ page import = "odega.bean.MapDTO"%>
+<%@ page import = "odega.bean.ImageDAO"%>
+<%@ page import = "odega.bean.ImageDTO"%>
 
 <%@ page import = "java.util.List" %>
 <%@ page import = "java.text.SimpleDateFormat" %>
@@ -21,7 +23,9 @@
     <!--boot js-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
     <!-- naver map api -->
-    <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=YOUR_CLIENT_ID"></script>
+    <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=bsyhva5qif"></script>
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     
     <!-- css -->
     <link href="../../resources/static/css/postView.css" rel="stylesheet">
@@ -90,16 +94,21 @@
 
 
 		<%
-		//임의의 포스트번호 1(이 후 파라미터로 받아오기)
+			//임의의 포스트번호 1(이 후 파라미터로 받아오기)
+			int post_num = 1;
+			
 			MapDAO mapDAO = new MapDAO();
-			List<MapDTO> mapList = mapDAO.getMapList(1);
+			List<MapDTO> mapList = mapDAO.getMapList(post_num);
+			
+			ImageDAO imgDAO = new ImageDAO();
+			List<ImageDTO> imgList = imgDAO.getImageList(post_num);
 		%>
 		<!--post-->
         <div id="contentBox">
             <div class="d-flex justify-content-center">
                 <div id="maincon">
                     <div id="title" class="text-center"><b><i><%=post.getTitle() %></i></b></div>
-                    <div id="content" class="text-left mt-3">
+                    <div id="content" class="text-center mt-3">
                         <%=post.getContent() %>
                     </div>
                 </div>
@@ -109,23 +118,70 @@
                     <div class="d-flex justify-content-center">
                         <div id="imgs" class="d-flex justify-content-center">
 							<ul class="list d-flex justify-content-between">
-								<li class="is_on flex-fill"><a href="#tab1" class="btn btn-block flex-fill">Tab Button1</a>
-									<div id="tab1" class="cont">
-										<div id="imgBox">
-											<img width="700px" src="https://file2.nocutnews.co.kr/newsroom/image/2023/02/05/202302050952179184_0.jpg" alt="">
-										</div>
-										<div class="d-flex justify-content-center">
-											<div id="info" class="text-center">
-												<div>넌 나 아니면 어떡하려 그래 이것 봐 매번 널 챙겨 늘 덜렁대며 눈 앞에 두고도 찾질 못하는 걸 이 순간 내가 말하고 있는 건 단지 물건만은 아냐 더 방심하다 진짜 소중한 걸 잃어버릴지도 몰라 이 세상의 모든 규칙들은 깨어지기 위해서 있다 하던데 Yeah 밤새 너로 채운 내 꿈들을 이젠 이루어 볼 Chance You break your rules 평행선 같은 사이 안 해 Anymore You break
-													your rules 그 선을 넘어갈게 먼저 네게로 You break your rules 커지는 심장 소리 놀랐다면 I'm sorry 꿈 속의 눈빛으로 날 바라봐 줘 You break your rules Tell me why 널 스치는 나의 손이 왜 이렇게 자꾸 떨려 더는 주저 말고 Go go</div>
+								<%-- image(map)갯수만큼 li 반복하기 --%>
+								<%for(int i=0; i<mapList.size(); i++){%>
+									<li class="flex-fill" id="tab<%=i%>">
+										<a href="tab<%=i%>" class="btn btn-block flex-fill"><%=mapList.get(i).getPlace_name()%></a>
+										<div id="tab<%=i%>" class="cont">
+											<div id="imgBox">
+												<img width="700px" src="<%=imgList.get(i).getImg_url() %>" alt="">
+											</div>
+											<div class="d-flex justify-content-center">
+												<div id="info" class="text-center m-3">
+													<div class="d-flex justify-content-center">
+														<div id="map<%=i%>" style="width:400px;height:400px;"></div>
+														<script>
+															var HOME_PATH = window.HOME_PATH || '.';
+	
+															var <%=mapList.get(i).getPlace_name()%> = new naver.maps.LatLng(<%=mapList.get(i).getLat()%>, <%=mapList.get(i).getLongi()%>),
+																map<%=i%> = new naver.maps.Map('map<%=i%>', {
+															        center: <%=mapList.get(i).getPlace_name()%>,
+															        zoom: 19
+															    }),
+															    marker = new naver.maps.Marker({
+															        map: map<%=i%>,
+															        position: <%=mapList.get(i).getPlace_name()%>
+															    });
+															
+															infowindows.push(new naver.maps.InfoWindow({
+																content: [
+																    '<div style="padding: 10px; box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 16px 0px;">',
+																    `   <div style="font-weight: bold; margin-bottom: 5px;">${sortedToiletData[0].FNAME}</div>`,
+																    `   <div style="font-size: 13px;">
+																    		<h4><%=mapList.get(i).getPlace_name() %></h4>
+																    		<p><%=mapList.get(i).getAddress_name() %></p>
+																    	<div>`,
+																    "</div>",
+																  ].join(""),
+																  maxWidth: 300,
+																  anchorSize: {
+																    width: 12,
+																    height: 14,
+																  },
+																  borderColor: "#cecdc7"
+															}));	
+														
+															naver.maps.Event.addListener(marker, "click", function(e) {
+															    if (infowindow.getMap()) {
+															        infowindow.close();
+															    } else {
+															        infowindow.open(map<%=i%>, marker);
+															    }
+															});
+															
+															infowindow.open(map<%=i%>, marker);
+														</script>
+													</div>
+													<p><b><%=mapList.get(i).getPlace_name() %></b></p>
+													<small><%=mapList.get(i).getAddress_name() %></small>
+													<div>
+														<%=mapList.get(i).getDescription() %>
+													</div>
+												</div>
 											</div>
 										</div>
-									</div>
-								</li>
-								<li class="flex-fill"><a href="#tab2" class="btn flex-fill">Tab Button2</a>
-									<div id="tab2" class="cont">Tab Content2</div></li>
-								<li class="flex-fill"><a href="#tab3" class="btn flex-fill">Tab Button3</a>
-									<div id="tab3" class="cont">Tab Content3</div></li>
+									</li>
+								<%} %>
 							</ul>
 						</div>
                     </div>
@@ -134,15 +190,20 @@
         </div>
         <!--/post-->
     </section>
-</body>
+</body> 
 
-<script>
+<script type="text/javascript">
+	//페이지로드시에 tab0에만 is_on
+	$(document).ready(function(){
+		document.getElementById('tab0').classList.add('is_on');
+		console.log('tab0 view');
+	});
 
 	const tabList = document.querySelectorAll('#imgs .list li');
 
 	for (var i = 0; i < tabList.length; i++) {
 		tabList[i].querySelector('.btn').addEventListener('click', function(e) {
-			console.log("클릭: "+this)
+			console.log("클릭: " + this)
 			e.preventDefault();
 			for (var j = 0; j < tabList.length; j++) {
 				tabList[j].classList.remove('is_on');
