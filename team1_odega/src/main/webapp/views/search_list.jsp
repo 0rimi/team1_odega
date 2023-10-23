@@ -46,7 +46,7 @@
 	%>
 				<tr class="odd">
                	  <td class="sorting_1"><%=dto.getNum()%></td>
-               	  <a href="content.jsp?num=<%=dto.getNum()%>"><td><%=dto.getTitle()%></td></a>
+               	  <td><a href="#"><%=dto.getTitle()%></a></td>
                	  <td><%=dto.getNickname()%></td>
                	  <td><%=dto.getContent()%></td>
                	  <td><%=dto.getReg()%></td>
