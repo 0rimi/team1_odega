@@ -178,9 +178,10 @@ function searchPlaces() {
 	
 	// 검색결과 목록을 클릭했을 때 호출되는 함수입니다
 	$(document).on('click', '.info', function (e) {
+		console.log(e.currentTarget.dataset.id);
 		console.log(e.currentTarget.children[0].innerText);
 		console.log(e.currentTarget.children[1].textContent);
-		console.log(e.currentTarget.dataset.id);
+		
 	   // console.log("클릭 : " + e.target.firstChild.nodeValue);
 	});
 	
