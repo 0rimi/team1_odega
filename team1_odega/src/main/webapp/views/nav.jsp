@@ -48,18 +48,13 @@
 <!-- if문 써서 session id==null일 경우 로그인 드롭다운만 보이도록 추가 -->
 <%
 	try {
-		String id=null;
-
-		if(session.getAttribute("id") != null) {
-			id = (String) session.getAttribute("id");
-		}
-		if(session.getAttribute("id")==null){%>
+		if(session.getAttribute("user_id")==null){%>
 		<div class="dropdown text-end">
           <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
             <img src="https://mblogthumb-phinf.pstatic.net/MjAyMDExMDFfMTgy/MDAxNjA0MjI4ODc1NDMw.Ex906Mv9nnPEZGCh4SREknadZvzMO8LyDzGOHMKPdwAg.ZAmE6pU5lhEdeOUsPdxg8-gOuZrq_ipJ5VhqaViubI4g.JPEG.gambasg/%EC%9C%A0%ED%8A%9C%EB%B8%8C_%EA%B8%B0%EB%B3%B8%ED%94%84%EB%A1%9C%ED%95%84_%ED%95%98%EB%8A%98%EC%83%89.jpg?type=w800" alt="mdo" width="32" height="32" class="rounded-circle">
           </a>
           <ul class="dropdown-menu text-small" style="">
-            <li><a class="dropdown-item" href="#">로그인</a></li>
+            <li><a class="dropdown-item" href="testLogin.jsp">로그인</a></li>
           </ul>
         </div>
 <% }else{ %>
@@ -69,7 +64,7 @@
           </a>
           <ul class="dropdown-menu text-small" style="">
             <li><a class="dropdown-item" href="#">내 정보</a></li>
-            <li><a class="dropdown-item" href="#">좋아요 한 글</a></li>
+            <li><a class="dropdown-item" href="likes_list.jsp">좋아요 한 글</a></li>
             <li><a class="dropdown-item" href="#">날 구독한 사람들</a></li>
             <li><hr class="dropdown-divider"></li>
             <li><a class="dropdown-item" href="#">로그아웃</a></li>

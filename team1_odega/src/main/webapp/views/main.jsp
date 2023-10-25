@@ -77,12 +77,12 @@
          <div class="card shadow-sm">
 <!-- 사진 클릭하면 게시글 상세 이동 -->
           <a href="#">
-           <img src="https://img.freepik.com/premium-vector/simple-vector-red-scratch-rubber-stamp-sample-at-transparent-effect-background_9834-1272.jpg" style="width: 100%"></a>
+           <img src="<%=rs.getString("img_url")%>" style="width: 400px; height: 400px;"></a>
             <div class="card-body">
              <p class="card-text"><%=rs.getString("title") %></p>
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
-                  <button type="submit" class="btn btn-sm btn-outline-secondary" style="width: 48px; height: 31px;" onclick="document.location.href='like_cnt_up.jsp?posts_num=<%=rs.getInt("posts_num")%>&user_id=<%rs.getString("user_id");%>'"><img src="https://media.istockphoto.com/id/1128400054/ko/%EB%B2%A1%ED%84%B0/%EB%A7%88%EC%9D%8C-%EC%82%AC%EB%9E%91-%EB%B0%9C%EB%A0%8C%ED%83%80%EC%9D%B8%EC%9D%98-%EB%82%A0%EC%9D%98-%EC%83%81%EC%A7%95-%ED%9D%B0%EC%83%89-%EB%B0%B0%EA%B2%BD%EC%97%90-%EA%B3%A0%EB%A6%BD-%EB%90%9C-%ED%8F%89%EB%A9%B4-%EB%B9%A8%EA%B0%84%EC%83%89-%EC%95%84%EC%9D%B4%EC%BD%98%EC%9E%85%EB%8B%88%EB%8B%A4-%EB%B2%A1%ED%84%B0-%EC%9D%BC%EB%9F%AC%EC%8A%A4%ED%8A%B8%EC%9E%85%EB%8B%88%EB%8B%A4-%EB%B2%A1%ED%84%B0.jpg?s=612x612&w=0&k=20&c=cROqi2BRjaXrqXdGb1qPGoVQiSo8UL47lSYEwQ2vbcc=" style="width: 80%" ></button>
+                  <button type="submit" class="btn btn-sm btn-outline-secondary" style="width: 48px; height: 31px;" onclick="document.location.href='like_cnt_up.jsp?posts_num=<%=rs.getInt("posts_num")%>'"><img src="https://media.istockphoto.com/id/1128400054/ko/%EB%B2%A1%ED%84%B0/%EB%A7%88%EC%9D%8C-%EC%82%AC%EB%9E%91-%EB%B0%9C%EB%A0%8C%ED%83%80%EC%9D%B8%EC%9D%98-%EB%82%A0%EC%9D%98-%EC%83%81%EC%A7%95-%ED%9D%B0%EC%83%89-%EB%B0%B0%EA%B2%BD%EC%97%90-%EA%B3%A0%EB%A6%BD-%EB%90%9C-%ED%8F%89%EB%A9%B4-%EB%B9%A8%EA%B0%84%EC%83%89-%EC%95%84%EC%9D%B4%EC%BD%98%EC%9E%85%EB%8B%88%EB%8B%A4-%EB%B2%A1%ED%84%B0-%EC%9D%BC%EB%9F%AC%EC%8A%A4%ED%8A%B8%EC%9E%85%EB%8B%88%EB%8B%A4-%EB%B2%A1%ED%84%B0.jpg?s=612x612&w=0&k=20&c=cROqi2BRjaXrqXdGb1qPGoVQiSo8UL47lSYEwQ2vbcc=" style="width: 80%" ></button>
                   <button type="button" class="btn btn-sm btn-outline-secondary"><%=rs.getInt("post_like_cnt") %></button>
                 </div>
                 <small class="text-body-secondary"><%=rs.getString("nickname") %></small>

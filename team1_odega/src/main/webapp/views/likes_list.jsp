@@ -1,8 +1,7 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ page import="java.sql.*" %>
+<%@ page  contentType="text/html; charset=UTF-8"%>
+<%@ page import="java.sql.*"  %>
 <%@ page import="odega.bean.PostsDTO" %>
-<%@ page import="odega.bean.PostsDAO" %>
+<%@ page import="odega.bean.UserLikeDAO" %>
 <%@ page import="java.util.ArrayList" %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -10,23 +9,24 @@
 <meta charset="UTF-8">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
-<title>검색 실행창</title>
+<title>내가 좋아요 한 리스트</title>
 </head>
 <nav>
   <%@ include file="nav.jsp"  %>
 </nav>
 <body>
-
 <%
 	request.setCharacterEncoding("UTF-8");
-	String searchR = request.getParameter("keyword");
-	PostsDAO dao = new PostsDAO();
+	String user_id = (String)session.getAttribute("user_id");
 	
-	ArrayList<PostsDTO> list=dao.searchList(searchR);
-	%>
-	<div class="card shadow mb-4">
+	
+	UserLikeDAO likedao = new UserLikeDAO();
+	
+	ArrayList<PostsDTO> likelist = likedao.likeList(user_id);
+%>
+<div class="card shadow mb-4">
       <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">"<%=searchR%>"의 검색 결과</h6>
+        <h6 class="m-0 font-weight-bold text-primary">내가 좋아요 한 글 목록</h6>
       </div>
          <div class="card-body">
            <div class="table-responsive">
@@ -38,13 +38,13 @@
                <tbody>
 <%	
 	
-	if(list==null){	%>
+	if(likelist==null){	%>
 		<tr class="odd">
-			<td><h5>검색 결과가 없습니다.</h5></td>
+			<td><h5>좋아요 한 글이 없습니다.</h5></td>
 		</tr>
 <%	}else{
 	
-	for(PostsDTO dto : list){
+	for(PostsDTO dto : likelist){
 	%>
 				<tr class="odd">
                	  <td class="sorting_1"><%=dto.getNum()%></td>
@@ -61,4 +61,4 @@
             </table></div></div>
          </div>
 </body>
-</html>
+
