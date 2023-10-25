@@ -10,6 +10,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
     <!--boot js-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+	<!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <!-- style -->
     <link href="test.css" rel="stylesheet">
 </head>
@@ -55,41 +57,11 @@ var infowindow = new kakao.maps.InfoWindow({zIndex:1});
 // 키워드로 장소를 검색합니다
 searchPlaces();
 
-const getCurrentCoordinate = async () => {
-  console.log("getCurrentCoordinate 함수 실행!!!");
-  return new Promise((res, rej) => {
-    // HTML5의 geolocaiton으로 사용할 수 있는지 확인합니다.
-    if (navigator.geolocation) {
-      // GeoLocation을 이용해서 접속 위치를 얻어옵니다.
-      navigator.geolocation.getCurrentPosition(function (position) {
-        console.log(position);
-        const lat = position.coords.latitude; // 위도
-        const lon = position.coords.longitude; // 경도
-
-        const coordinate = new kakao.maps.LatLng(lat, lon);
-        res(coordinate);
-      });
-    } else {
-      rej(new Error("현재 위치를 불러올 수 없습니다."));
-    }
-  });
-};
-
 // 키워드 검색을 요청하는 함수입니다
 function searchPlaces() {
 
     var keyword = document.getElementById('keyword').value;
 	
-    //현재위치 기준으로 찾기
-	const currentCoordinate = await
-	getCurrentCoordinate();
-	console.log(currentCoordinate);
-	var options = {
-		location : currentCoordinate,
-		radius : 10000,
-		sort : kakao.maps.services.SortBy.DISTANCE,
-	};
-
 	if (!keyword.replace(/^\s+|\s+$/g, '')) {
 		console.log('키워드 입력 필요!');
 		return false;
@@ -184,7 +156,7 @@ function searchPlaces() {
 		var el = document.createElement('li'), itemStr = '<span class="markerbg marker_'
 				+ (index + 1)
 				+ '"></span>'
-				+ '<div class="info">'
+				+ '<div class="info" data-id="'+places.id+'">'
 				+ '   <h5>'
 				+ places.place_name + '</h5>';
 
@@ -201,9 +173,17 @@ function searchPlaces() {
 		el.innerHTML = itemStr;
 		el.className = 'item';
 
-		return el;
+		return el; 
 	}
-
+	
+	// 검색결과 목록을 클릭했을 때 호출되는 함수입니다
+	$(document).on('click', '.info', function (e) {
+		console.log(e.currentTarget.children[0].innerText);
+		console.log(e.currentTarget.children[1].textContent);
+		console.log(e.currentTarget.dataset.id);
+	   // console.log("클릭 : " + e.target.firstChild.nodeValue);
+	});
+	
 	// 마커를 생성하고 지도 위에 마커를 표시하는 함수입니다
 	function addMarker(position, idx, title) {
 		var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png', // 마커 이미지 url, 스프라이트 이미지를 씁니다
