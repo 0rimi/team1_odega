@@ -29,11 +29,10 @@ public class MapDAO extends OracleDB{
 			conn = getConnection();
 			pstmt = conn.prepareStatement(
 			" select * from maps where post_num = ? ");
-			
 			pstmt.setInt(1, post_num);
 			rs = pstmt.executeQuery();
 			
-			if (rs.next()) {
+			while(rs.next()) {
 				MapDTO map = new MapDTO();
 				map.setId(rs.getInt("id"));
 				map.setPlace_name(rs.getString("place_name"));
